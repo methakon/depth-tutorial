@@ -12,4 +12,4 @@
 
 // // part 3:
 // let b = [2, 3, 4, 5, 6].includes(7);
-// console.log(b);
+// console.log(b); here
