@@ -6,14 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/methakon/depth-tutorial.git"
-  },
-  "author": "",
+  "repository": "git+https://github.com/methakon/depth-tutorial.git",
+  "author": "swarna sekhar dhar",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/methakon/depth-tutorial/issues"
   },
-  "homepage": "https://github.com/methakon/depth-tutorial#readme"
+  "homepage": "https://github.com/methakon/depth-tutorial#readme",
+  "dependencies": {
+    "bull": "^4.16.5",
+    "bullmq": "^5.66.5",
+    "kafkajs": "^2.2.4",
+    "mq": "^0.0.0"
+  }
 }
