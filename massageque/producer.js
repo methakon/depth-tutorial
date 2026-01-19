@@ -1,25 +1,36 @@
-const { Queue } = require("bullmq");
+const { kafka } = require("./client");
+const readline = require("readline");
 
-// Configure connection to your Docker Redis
-const connection = {
-  host: '127.0.0.1',
-  port: 6379
-};
-
-// Initialize the queue
-const notificationQueue = new Queue("email-queue", { connection });
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 async function init() {
-  const res = await notificationQueue.add("email to piyush", {
-    email: "piyushgarg.dev",
-    subject: "Welcome Mess",
-    body: "Hey Piyush, Welcome",
-  });
+  const producer = kafka.producer();
 
-  console.log("Job added to queue:", res.id);
-  
-  // Optional: Close connection so the script finishes immediately
-  await notificationQueue.close();
+  console.log("Connecting Producer");
+  await producer.connect();
+  console.log("Producer Connected Successfully");
+
+  rl.setPrompt("> ");
+  rl.prompt();
+
+  rl.on("line", async function (line) {
+    const [riderName, location] = line.split(" ");
+    await producer.send({
+      topic: "rider-updates",
+      messages: [
+        {
+          partition: location.toLowerCase() === "north" ? 0 : 1,
+          key: "location-update",
+          value: JSON.stringify({ name: riderName, location }),
+        },
+      ],
+    });
+  }).on("close", async () => {
+    await producer.disconnect();
+  });
 }
 
 init();
